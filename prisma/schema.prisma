@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  image       String
+  description Json?
+  Services    Services[]
+}
+
+model Doctors {
+  id          Int     @id @default(autoincrement())
+  firstName   String
+  image       String
+  surName     String?
+  lastName    String
+  password    String
+  email       String  @unique
+  description Json
+  categoryId  Int
+  experience  String
+  post        String
+}
+
+model Records {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  serviceId Int
+  userId    Int
+  date      DateTime
+}
+
+model Services {
+  id           Int      @id @default(autoincrement())
+  name         String
+  image        String
+  price        Int
+  categoryName String
+  description  Json?
+  doctorId     Int
+  Category     Category @relation(fields: [categoryName], references: [name])
+
+  @@index([categoryName], map: "Services_categoryName_fkey")
+}
+
+model Users {
+  id        Int          @id @default(autoincrement())
+  firstName String
+  surName   String?
+  lastName  String
+  password  String
+  email     String       @unique
+  phone     String       @unique
+  birth     DateTime
+  gender    Users_gender
+  snils     String
+}
+
+enum Users_gender {
+  MALE
+  FEMALE
+}
