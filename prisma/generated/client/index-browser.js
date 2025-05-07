@@ -149,6 +149,12 @@ exports.Prisma.RecordsScalarFieldEnum = {
   date: 'date'
 };
 
+exports.Prisma.TokensScalarFieldEnum = {
+  id: 'id',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken'
+};
+
 exports.Prisma.ServicesScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -169,7 +175,8 @@ exports.Prisma.UsersScalarFieldEnum = {
   phone: 'phone',
   birth: 'birth',
   gender: 'gender',
-  snils: 'snils'
+  snils: 'snils',
+  role: 'role'
 };
 
 exports.Prisma.SortOrder = {
@@ -218,6 +225,11 @@ exports.Prisma.DoctorsOrderByRelevanceFieldEnum = {
   post: 'post'
 };
 
+exports.Prisma.TokensOrderByRelevanceFieldEnum = {
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken'
+};
+
 exports.Prisma.ServicesOrderByRelevanceFieldEnum = {
   name: 'name',
   image: 'image',
@@ -238,10 +250,17 @@ exports.Users_gender = exports.$Enums.Users_gender = {
   FEMALE: 'FEMALE'
 };
 
+exports.Roles = exports.$Enums.Roles = {
+  ADMIN: 'ADMIN',
+  CLIENT: 'CLIENT',
+  DOCTOR: 'DOCTOR'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
   Doctors: 'Doctors',
   Records: 'Records',
+  Tokens: 'Tokens',
   Services: 'Services',
   Users: 'Users'
 };

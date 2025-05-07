@@ -25,7 +25,6 @@ export class CategoryService {
     );
     // Возвращаем категории вместе с услугами принадлежих ему
   }
-
   async findOne(id: number, res: Response): Promise<Response<FindCategoryDto>> {
     const categories: Category | null = await this.prisma.category.findFirst({
       where: {

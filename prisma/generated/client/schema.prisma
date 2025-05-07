@@ -38,6 +38,12 @@ model Records {
   date      DateTime
 }
 
+model Tokens {
+  id           Int    @id @default(autoincrement())
+  accessToken  String
+  refreshToken String
+}
+
 model Services {
   id           Int      @id @default(autoincrement())
   name         String
@@ -62,9 +68,16 @@ model Users {
   birth     DateTime
   gender    Users_gender
   snils     String
+  role      Roles        @default(CLIENT)
 }
 
 enum Users_gender {
   MALE
   FEMALE
+}
+
+enum Roles {
+  ADMIN
+  CLIENT
+  DOCTOR
 }
