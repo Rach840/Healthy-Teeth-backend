@@ -96,12 +96,19 @@ export class UsersService {
   ) {
     console.log('sdfsad', user);
     const { time, productId, doctorId } = order;
-    await this.prisma.records.create({
+    const service = await this.prisma.services.findFirst({
+      where: {
+        id: productId,
+      },
+    });
+
+    await this.prisma.orders.create({
       data: {
         serviceId: productId,
         userId: user.sub as number,
         date: time,
         doctorId: doctorId,
+        price: service.price,
       },
     });
     res.status(HttpStatus.CREATED).send({ succes: true });

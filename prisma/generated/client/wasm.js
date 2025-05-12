@@ -141,12 +141,15 @@ exports.Prisma.DoctorsScalarFieldEnum = {
   post: 'post'
 };
 
-exports.Prisma.RecordsScalarFieldEnum = {
+exports.Prisma.OrdersScalarFieldEnum = {
   id: 'id',
   doctorId: 'doctorId',
   serviceId: 'serviceId',
   userId: 'userId',
-  date: 'date'
+  status: 'status',
+  date: 'date',
+  createdAt: 'createdAt',
+  price: 'price'
 };
 
 exports.Prisma.TokensScalarFieldEnum = {
@@ -245,6 +248,11 @@ exports.Prisma.UsersOrderByRelevanceFieldEnum = {
   phone: 'phone',
   snils: 'snils'
 };
+exports.Status = exports.$Enums.Status = {
+  WAITING: 'WAITING',
+  PROVIDED: 'PROVIDED'
+};
+
 exports.Users_gender = exports.$Enums.Users_gender = {
   MALE: 'MALE',
   FEMALE: 'FEMALE'
@@ -259,7 +267,7 @@ exports.Roles = exports.$Enums.Roles = {
 exports.Prisma.ModelName = {
   Category: 'Category',
   Doctors: 'Doctors',
-  Records: 'Records',
+  Orders: 'Orders',
   Tokens: 'Tokens',
   Services: 'Services',
   Users: 'Users'

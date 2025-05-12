@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Request,
   Res,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Roles as Role } from '../../prisma/generated/client';
 import { Roles } from '../roles/roles.decorator';
 import { RolesGuard } from '../roles/roles.guard';
@@ -20,6 +18,7 @@ import { Response } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('admin')
+@Roles(Role.ADMIN)
 @UseGuards(AuthGuard, RolesGuard)
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
@@ -28,24 +27,35 @@ export class AdminController {
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
   }
-  @Roles(Role.ADMIN)
-  @Get()
-  findAll(@Request() req: Request, @Res() res: Response) {
-    return this.adminService.findAll(req, res);
+  @Get('dashboard')
+  async getDashboardInfo(@Request() req: Request, @Res() res: Response) {
+    return this.adminService.getDashboardInfo(req, res);
+  }
+  @Get('users')
+  async findAllUsers(@Request() req: Request, @Res() res: Response) {
+    return this.adminService.findAllUsers(req, res);
+  }
+  @Get('orders')
+  async findAllOrders(@Request() req: Request, @Res() res: Response) {
+    return this.adminService.findAllOrders(req, res);
+  }
+  @Get('categories')
+  async findAllCategories(@Request() req: Request, @Res() res: Response) {
+    return this.adminService.findAllCategories(req, res);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
+  @Get('orders/:id')
+  findOne(@Param('id') id: string, @Res() res: Response) {
+    return this.adminService.findOneOrder(+id, res);
   }
+  //
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
+  //   return this.adminService.update(+id, updateAdminDto);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  @Delete('orders/delete/:id')
+  async removeOrder(@Param('id') id: string, @Res() res: Response) {
+    return this.adminService.removeOrder(+id, res);
   }
 }

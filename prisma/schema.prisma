@@ -30,12 +30,15 @@ model Doctors {
   post        String
 }
 
-model Records {
+model Orders {
   id        Int      @id @default(autoincrement())
   doctorId  Int
   serviceId Int
   userId    Int
+  status    Status   @default(WAITING)
   date      DateTime
+  createdAt DateTime @default(now())
+  price     Int
 }
 
 model Tokens {
@@ -74,6 +77,11 @@ model Users {
 enum Users_gender {
   MALE
   FEMALE
+}
+
+enum Status {
+  WAITING
+  PROVIDED
 }
 
 enum Roles {
