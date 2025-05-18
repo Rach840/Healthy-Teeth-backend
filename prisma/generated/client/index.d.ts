@@ -328,8 +328,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.7.0
-   * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+   * Prisma Client JS version: 6.8.2
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -2336,11 +2336,13 @@ export namespace Prisma {
 
   export type DoctorsAvgAggregateOutputType = {
     id: number | null
+    userId: number | null
     categoryId: number | null
   }
 
   export type DoctorsSumAggregateOutputType = {
     id: number | null
+    userId: number | null
     categoryId: number | null
   }
 
@@ -2350,7 +2352,7 @@ export namespace Prisma {
     image: string | null
     surName: string | null
     lastName: string | null
-    password: string | null
+    userId: number | null
     email: string | null
     categoryId: number | null
     experience: string | null
@@ -2363,7 +2365,7 @@ export namespace Prisma {
     image: string | null
     surName: string | null
     lastName: string | null
-    password: string | null
+    userId: number | null
     email: string | null
     categoryId: number | null
     experience: string | null
@@ -2376,7 +2378,7 @@ export namespace Prisma {
     image: number
     surName: number
     lastName: number
-    password: number
+    userId: number
     email: number
     description: number
     categoryId: number
@@ -2388,11 +2390,13 @@ export namespace Prisma {
 
   export type DoctorsAvgAggregateInputType = {
     id?: true
+    userId?: true
     categoryId?: true
   }
 
   export type DoctorsSumAggregateInputType = {
     id?: true
+    userId?: true
     categoryId?: true
   }
 
@@ -2402,7 +2406,7 @@ export namespace Prisma {
     image?: true
     surName?: true
     lastName?: true
-    password?: true
+    userId?: true
     email?: true
     categoryId?: true
     experience?: true
@@ -2415,7 +2419,7 @@ export namespace Prisma {
     image?: true
     surName?: true
     lastName?: true
-    password?: true
+    userId?: true
     email?: true
     categoryId?: true
     experience?: true
@@ -2428,7 +2432,7 @@ export namespace Prisma {
     image?: true
     surName?: true
     lastName?: true
-    password?: true
+    userId?: true
     email?: true
     description?: true
     categoryId?: true
@@ -2529,7 +2533,7 @@ export namespace Prisma {
     image: string
     surName: string | null
     lastName: string
-    password: string
+    userId: number
     email: string
     description: JsonValue
     categoryId: number
@@ -2562,7 +2566,7 @@ export namespace Prisma {
     image?: boolean
     surName?: boolean
     lastName?: boolean
-    password?: boolean
+    userId?: boolean
     email?: boolean
     description?: boolean
     categoryId?: boolean
@@ -2578,7 +2582,7 @@ export namespace Prisma {
     image?: boolean
     surName?: boolean
     lastName?: boolean
-    password?: boolean
+    userId?: boolean
     email?: boolean
     description?: boolean
     categoryId?: boolean
@@ -2586,7 +2590,7 @@ export namespace Prisma {
     post?: boolean
   }
 
-  export type DoctorsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "image" | "surName" | "lastName" | "password" | "email" | "description" | "categoryId" | "experience" | "post", ExtArgs["result"]["doctors"]>
+  export type DoctorsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "image" | "surName" | "lastName" | "userId" | "email" | "description" | "categoryId" | "experience" | "post", ExtArgs["result"]["doctors"]>
 
   export type $DoctorsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Doctors"
@@ -2597,7 +2601,7 @@ export namespace Prisma {
       image: string
       surName: string | null
       lastName: string
-      password: string
+      userId: number
       email: string
       description: Prisma.JsonValue
       categoryId: number
@@ -2977,7 +2981,7 @@ export namespace Prisma {
     readonly image: FieldRef<"Doctors", 'String'>
     readonly surName: FieldRef<"Doctors", 'String'>
     readonly lastName: FieldRef<"Doctors", 'String'>
-    readonly password: FieldRef<"Doctors", 'String'>
+    readonly userId: FieldRef<"Doctors", 'Int'>
     readonly email: FieldRef<"Doctors", 'String'>
     readonly description: FieldRef<"Doctors", 'Json'>
     readonly categoryId: FieldRef<"Doctors", 'Int'>
@@ -3362,6 +3366,7 @@ export namespace Prisma {
     status: number
     date: number
     createdAt: number
+    description: number
     price: number
     _all: number
   }
@@ -3413,6 +3418,7 @@ export namespace Prisma {
     status?: true
     date?: true
     createdAt?: true
+    description?: true
     price?: true
     _all?: true
   }
@@ -3511,6 +3517,7 @@ export namespace Prisma {
     status: $Enums.Status
     date: Date
     createdAt: Date
+    description: JsonValue | null
     price: number
     _count: OrdersCountAggregateOutputType | null
     _avg: OrdersAvgAggregateOutputType | null
@@ -3541,6 +3548,7 @@ export namespace Prisma {
     status?: boolean
     date?: boolean
     createdAt?: boolean
+    description?: boolean
     price?: boolean
   }, ExtArgs["result"]["orders"]>
 
@@ -3554,10 +3562,11 @@ export namespace Prisma {
     status?: boolean
     date?: boolean
     createdAt?: boolean
+    description?: boolean
     price?: boolean
   }
 
-  export type OrdersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doctorId" | "serviceId" | "userId" | "status" | "date" | "createdAt" | "price", ExtArgs["result"]["orders"]>
+  export type OrdersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doctorId" | "serviceId" | "userId" | "status" | "date" | "createdAt" | "description" | "price", ExtArgs["result"]["orders"]>
 
   export type $OrdersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Orders"
@@ -3570,6 +3579,7 @@ export namespace Prisma {
       status: $Enums.Status
       date: Date
       createdAt: Date
+      description: Prisma.JsonValue | null
       price: number
     }, ExtArgs["result"]["orders"]>
     composites: {}
@@ -3947,6 +3957,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Orders", 'Status'>
     readonly date: FieldRef<"Orders", 'DateTime'>
     readonly createdAt: FieldRef<"Orders", 'DateTime'>
+    readonly description: FieldRef<"Orders", 'Json'>
     readonly price: FieldRef<"Orders", 'Int'>
   }
     
@@ -7164,7 +7175,7 @@ export namespace Prisma {
     image: 'image',
     surName: 'surName',
     lastName: 'lastName',
-    password: 'password',
+    userId: 'userId',
     email: 'email',
     description: 'description',
     categoryId: 'categoryId',
@@ -7183,6 +7194,7 @@ export namespace Prisma {
     status: 'status',
     date: 'date',
     createdAt: 'createdAt',
+    description: 'description',
     price: 'price'
   };
 
@@ -7289,7 +7301,6 @@ export namespace Prisma {
     image: 'image',
     surName: 'surName',
     lastName: 'lastName',
-    password: 'password',
     email: 'email',
     experience: 'experience',
     post: 'post'
@@ -7461,7 +7472,7 @@ export namespace Prisma {
     image?: StringFilter<"Doctors"> | string
     surName?: StringNullableFilter<"Doctors"> | string | null
     lastName?: StringFilter<"Doctors"> | string
-    password?: StringFilter<"Doctors"> | string
+    userId?: IntFilter<"Doctors"> | number
     email?: StringFilter<"Doctors"> | string
     description?: JsonFilter<"Doctors">
     categoryId?: IntFilter<"Doctors"> | number
@@ -7475,7 +7486,7 @@ export namespace Prisma {
     image?: SortOrder
     surName?: SortOrderInput | SortOrder
     lastName?: SortOrder
-    password?: SortOrder
+    userId?: SortOrder
     email?: SortOrder
     description?: SortOrder
     categoryId?: SortOrder
@@ -7494,7 +7505,7 @@ export namespace Prisma {
     image?: StringFilter<"Doctors"> | string
     surName?: StringNullableFilter<"Doctors"> | string | null
     lastName?: StringFilter<"Doctors"> | string
-    password?: StringFilter<"Doctors"> | string
+    userId?: IntFilter<"Doctors"> | number
     description?: JsonFilter<"Doctors">
     categoryId?: IntFilter<"Doctors"> | number
     experience?: StringFilter<"Doctors"> | string
@@ -7507,7 +7518,7 @@ export namespace Prisma {
     image?: SortOrder
     surName?: SortOrderInput | SortOrder
     lastName?: SortOrder
-    password?: SortOrder
+    userId?: SortOrder
     email?: SortOrder
     description?: SortOrder
     categoryId?: SortOrder
@@ -7529,7 +7540,7 @@ export namespace Prisma {
     image?: StringWithAggregatesFilter<"Doctors"> | string
     surName?: StringNullableWithAggregatesFilter<"Doctors"> | string | null
     lastName?: StringWithAggregatesFilter<"Doctors"> | string
-    password?: StringWithAggregatesFilter<"Doctors"> | string
+    userId?: IntWithAggregatesFilter<"Doctors"> | number
     email?: StringWithAggregatesFilter<"Doctors"> | string
     description?: JsonWithAggregatesFilter<"Doctors">
     categoryId?: IntWithAggregatesFilter<"Doctors"> | number
@@ -7548,6 +7559,7 @@ export namespace Prisma {
     status?: EnumStatusFilter<"Orders"> | $Enums.Status
     date?: DateTimeFilter<"Orders"> | Date | string
     createdAt?: DateTimeFilter<"Orders"> | Date | string
+    description?: JsonNullableFilter<"Orders">
     price?: IntFilter<"Orders"> | number
   }
 
@@ -7559,6 +7571,7 @@ export namespace Prisma {
     status?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
+    description?: SortOrderInput | SortOrder
     price?: SortOrder
   }
 
@@ -7573,6 +7586,7 @@ export namespace Prisma {
     status?: EnumStatusFilter<"Orders"> | $Enums.Status
     date?: DateTimeFilter<"Orders"> | Date | string
     createdAt?: DateTimeFilter<"Orders"> | Date | string
+    description?: JsonNullableFilter<"Orders">
     price?: IntFilter<"Orders"> | number
   }, "id">
 
@@ -7584,6 +7598,7 @@ export namespace Prisma {
     status?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
+    description?: SortOrderInput | SortOrder
     price?: SortOrder
     _count?: OrdersCountOrderByAggregateInput
     _avg?: OrdersAvgOrderByAggregateInput
@@ -7603,6 +7618,7 @@ export namespace Prisma {
     status?: EnumStatusWithAggregatesFilter<"Orders"> | $Enums.Status
     date?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
+    description?: JsonNullableWithAggregatesFilter<"Orders">
     price?: IntWithAggregatesFilter<"Orders"> | number
   }
 
@@ -7859,7 +7875,7 @@ export namespace Prisma {
     image: string
     surName?: string | null
     lastName: string
-    password: string
+    userId?: number
     email: string
     description: JsonNullValueInput | InputJsonValue
     categoryId: number
@@ -7873,7 +7889,7 @@ export namespace Prisma {
     image: string
     surName?: string | null
     lastName: string
-    password: string
+    userId?: number
     email: string
     description: JsonNullValueInput | InputJsonValue
     categoryId: number
@@ -7886,7 +7902,7 @@ export namespace Prisma {
     image?: StringFieldUpdateOperationsInput | string
     surName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     description?: JsonNullValueInput | InputJsonValue
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -7900,7 +7916,7 @@ export namespace Prisma {
     image?: StringFieldUpdateOperationsInput | string
     surName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     description?: JsonNullValueInput | InputJsonValue
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -7914,7 +7930,7 @@ export namespace Prisma {
     image: string
     surName?: string | null
     lastName: string
-    password: string
+    userId?: number
     email: string
     description: JsonNullValueInput | InputJsonValue
     categoryId: number
@@ -7927,7 +7943,7 @@ export namespace Prisma {
     image?: StringFieldUpdateOperationsInput | string
     surName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     description?: JsonNullValueInput | InputJsonValue
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -7941,7 +7957,7 @@ export namespace Prisma {
     image?: StringFieldUpdateOperationsInput | string
     surName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     description?: JsonNullValueInput | InputJsonValue
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -7956,6 +7972,7 @@ export namespace Prisma {
     status?: $Enums.Status
     date: Date | string
     createdAt?: Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price: number
   }
 
@@ -7967,6 +7984,7 @@ export namespace Prisma {
     status?: $Enums.Status
     date: Date | string
     createdAt?: Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price: number
   }
 
@@ -7977,6 +7995,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price?: IntFieldUpdateOperationsInput | number
   }
 
@@ -7988,6 +8007,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price?: IntFieldUpdateOperationsInput | number
   }
 
@@ -7999,6 +8019,7 @@ export namespace Prisma {
     status?: $Enums.Status
     date: Date | string
     createdAt?: Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price: number
   }
 
@@ -8009,6 +8030,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price?: IntFieldUpdateOperationsInput | number
   }
 
@@ -8020,6 +8042,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableJsonNullValueInput | InputJsonValue
     price?: IntFieldUpdateOperationsInput | number
   }
 
@@ -8430,7 +8453,7 @@ export namespace Prisma {
     image?: SortOrder
     surName?: SortOrder
     lastName?: SortOrder
-    password?: SortOrder
+    userId?: SortOrder
     email?: SortOrder
     description?: SortOrder
     categoryId?: SortOrder
@@ -8440,6 +8463,7 @@ export namespace Prisma {
 
   export type DoctorsAvgOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     categoryId?: SortOrder
   }
 
@@ -8449,7 +8473,7 @@ export namespace Prisma {
     image?: SortOrder
     surName?: SortOrder
     lastName?: SortOrder
-    password?: SortOrder
+    userId?: SortOrder
     email?: SortOrder
     categoryId?: SortOrder
     experience?: SortOrder
@@ -8462,7 +8486,7 @@ export namespace Prisma {
     image?: SortOrder
     surName?: SortOrder
     lastName?: SortOrder
-    password?: SortOrder
+    userId?: SortOrder
     email?: SortOrder
     categoryId?: SortOrder
     experience?: SortOrder
@@ -8471,6 +8495,7 @@ export namespace Prisma {
 
   export type DoctorsSumOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     categoryId?: SortOrder
   }
 
@@ -8544,6 +8569,7 @@ export namespace Prisma {
     status?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
+    description?: SortOrder
     price?: SortOrder
   }
 

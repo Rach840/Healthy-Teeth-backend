@@ -240,6 +240,87 @@ export class AdminService {
 
     return res.status(HttpStatus.OK).json(categoriesFullInfo);
   }
+  async findAllDoctors(req: Request, res: Response) {
+    const orders = await this.prisma.orders.findMany();
+    const categories = await this.prisma.category.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    const doctorsAll = await this.prisma.doctors.findMany();
+
+    const doctorFullInfo = doctorsAll.map((doctor) => {
+      const categoryName = categories.find(
+        (category) => doctor.categoryId == category.id,
+      );
+
+      const ordersByDoctor: orders[] = orders.filter(
+        (order) => order.doctorId == doctor.id,
+      );
+      const ordersAmount = ordersByDoctor.reduce(
+        (acc, item) => item.price + acc,
+        0,
+      );
+      const ordersActive = ordersByDoctor.filter(
+        (order) => order.status == 'WAITING',
+      ).length;
+      const doctorDescription: {
+        description: string;
+        education: string[];
+        quotes: string;
+      } = JSON.parse(doctor.description);
+
+      return {
+        ...doctor,
+        description: doctorDescription?.description,
+        education: doctorDescription?.education,
+        quotes: doctorDescription?.quotes,
+        ordersByDoctor: ordersByDoctor.length,
+        ordersActive: ordersActive,
+        categoryName: categoryName?.name,
+        ordersAmount: ordersAmount,
+      };
+    });
+
+    return res.status(HttpStatus.OK).json(doctorFullInfo);
+  }
+
+  async getDoctorOneInfo(id: number, res: Response) {
+    const doctor = await this.prisma.doctors.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    const ordersLastMonth = await this.prisma.orders.count({
+      where: {
+        doctorId: id,
+        createdAt: {
+          gte: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        },
+      },
+    });
+    const ordersByDoctor = await this.prisma.orders.findMany({
+      where: {
+        doctorId: id,
+      },
+    });
+
+    const doctorDescription: {
+      description: string;
+      education: string[];
+      quotes: string;
+    } = JSON.parse(doctor.description);
+
+    return res.status(HttpStatus.OK).json({
+      ...doctor,
+      description: doctorDescription?.description,
+      education: doctorDescription?.education,
+      quotes: doctorDescription?.quotes,
+      ordersByDoctor: ordersByDoctor,
+      ordersLastMonth: ordersLastMonth,
+    });
+  }
 
   async removeOrder(id: number, res: Response) {
     await this.prisma.orders.delete({

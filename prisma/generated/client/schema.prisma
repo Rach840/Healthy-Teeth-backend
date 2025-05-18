@@ -22,7 +22,7 @@ model Doctors {
   image       String
   surName     String?
   lastName    String
-  password    String
+  userId      Int     @default(1)
   email       String  @unique
   description Json
   categoryId  Int
@@ -31,14 +31,15 @@ model Doctors {
 }
 
 model Orders {
-  id        Int      @id @default(autoincrement())
-  doctorId  Int
-  serviceId Int
-  userId    Int
-  status    Status   @default(WAITING)
-  date      DateTime
-  createdAt DateTime @default(now())
-  price     Int
+  id          Int      @id @default(autoincrement())
+  doctorId    Int
+  serviceId   Int
+  userId      Int
+  status      Status   @default(WAITING)
+  date        DateTime
+  createdAt   DateTime @default(now())
+  description Json?
+  price       Int
 }
 
 model Tokens {

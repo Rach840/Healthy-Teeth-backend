@@ -48,7 +48,14 @@ export class AdminController {
   async findAllCategories(@Request() req: Request, @Res() res: Response) {
     return this.adminService.findAllCategories(req, res);
   }
-
+  @Get('doctors')
+  async findAllDoctors(@Request() req: Request, @Res() res: Response) {
+    return this.adminService.findAllDoctors(req, res);
+  }
+  @Get('doctors/:id')
+  async getDoctorOneInfo(@Param('id') id: string, @Res() res: Response) {
+    return this.adminService.getDoctorOneInfo(+id, res);
+  }
   @Get('orders/:id')
   findOne(@Param('id') id: string, @Res() res: Response) {
     return this.adminService.findOneOrder(+id, res);
