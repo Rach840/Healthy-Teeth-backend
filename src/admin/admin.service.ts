@@ -15,6 +15,7 @@ export class AdminService {
     const users = await this.prisma.users.findMany();
     return res.status(HttpStatus.OK).json(users);
   }
+
   async getDashboardInfo(req: Request, res: Response) {
     const popularOrders = await this.prisma.orders.groupBy({
       by: ['serviceId'],
@@ -194,7 +195,16 @@ export class AdminService {
     const orders = await this.prisma.orders.findMany();
     const categories = await this.prisma.category.findMany();
     const doctorsAll = await this.prisma.doctors.findMany();
-    const servicesAll = await this.prisma.services.findMany();
+    const servicesAll = await this.prisma.services.findMany({
+      select: {
+        description: true,
+        name: true,
+        categoryName: true,
+        price: true,
+        id: true,
+        doctorId: true,
+      },
+    });
     const categoriesFullInfo = categories.map((category) => {
       const doctor = doctorsAll.find(
         (doctor) => doctor.categoryId == category.id,
@@ -214,7 +224,7 @@ export class AdminService {
           };
         });
       const ordersByCategory: orders[] = orders.filter((order) =>
-        services.map((item) => item.id).includes(order.id),
+        services.map((item) => item.id).includes(order.serviceId),
       );
       const ordersActive = ordersByCategory.filter(
         (order) => order.status == 'WAITING',
@@ -238,5 +248,62 @@ export class AdminService {
       },
     });
     return res.status(HttpStatus.OK).json({});
+  }
+  async getServiceOneInfo(id: number, res: Response) {
+    console.log('sdfasdf');
+    const service = await this.prisma.services.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    const doctor = await this.prisma.doctors.findFirst({
+      where: {
+        id: service?.doctorId,
+      },
+    });
+    const lastOrder = await this.prisma.orders.findFirst({
+      where: {
+        serviceId: id,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+    const ordersByService = await this.prisma.orders.findMany({
+      where: {
+        serviceId: id,
+      },
+    });
+    const userByOrders = await this.prisma.users.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        surName: true,
+        gender: true,
+        phone: true,
+        email: true,
+        birth: true,
+      },
+      where: {
+        id: {
+          in: ordersByService.map((item) => item.id),
+        },
+      },
+    });
+    console.log('последний', lastOrder);
+
+    return res.status(HttpStatus.OK).json({
+      service: service,
+      ordersByService: ordersByService.map((order) => {
+        return {
+          ...userByOrders.find((user) => user?.id == order.userId),
+          ...order,
+        };
+      }),
+      doctor: doctor,
+      lastOrder: lastOrder?.date,
+      ordersSum: ordersByService.length * service.price,
+    });
   }
 }

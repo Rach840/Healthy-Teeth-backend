@@ -31,6 +31,11 @@ export class AdminController {
   async getDashboardInfo(@Request() req: Request, @Res() res: Response) {
     return this.adminService.getDashboardInfo(req, res);
   }
+
+  @Get('serviceOne/:id')
+  async getServiceOneInfo(@Param('id') id: string, @Res() res: Response) {
+    return this.adminService.getServiceOneInfo(+id, res);
+  }
   @Get('users')
   async findAllUsers(@Request() req: Request, @Res() res: Response) {
     return this.adminService.findAllUsers(req, res);
