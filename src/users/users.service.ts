@@ -16,7 +16,7 @@ export class UsersService {
       },
     });
   }
-  async createUser(user: UsersCreateInput, res: Response) {
+  async createUser({ user }: { user: UsersCreateInput }, res: Response) {
     const userExist = await this.prisma.users.findFirst({
       where: {
         email: user.email,
