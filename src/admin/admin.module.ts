@@ -8,6 +8,7 @@ import { PrismaService } from '../prisma.service';
   controllers: [AdminController],
 
   providers: [AdminService, PrismaService],
+  exports: [AdminModule],
   imports: [forwardRef(() => AuthModule)],
 })
 export class AdminModule {}

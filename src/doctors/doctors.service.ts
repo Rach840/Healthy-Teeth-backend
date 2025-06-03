@@ -3,10 +3,14 @@ import { PrismaService } from '../prisma.service';
 import { Response } from 'express';
 import { Doctors, Services } from '../../prisma/generated/client';
 import { GetDoctorDoctorsDto } from './dto/getDoctor-doctors.dto';
+import { AdminService } from '../admin/admin.service';
 
 @Injectable()
 export class DoctorsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private admin: AdminService
+  ) {}
 
   async findAll(res: Response): Promise<Response<GetDoctorDoctorsDto[]>> {
     // Получаем все категории
@@ -26,26 +30,46 @@ export class DoctorsService {
   }
 
   async findOne(
-    id: number,
+    id: string,
     res: Response,
   ): Promise<Response<GetDoctorDoctorsDto>> {
-    const doctor: Doctors | null = await this.prisma.doctors.findFirst({
+    const doctorByUser = this.prisma.doctors.findFirst({
       where: {
-        id: id,
-      },
-    });
-    if (!doctor) {
-      return res.status(HttpStatus.NO_CONTENT);
-    }
-    const servicesByDoctor = await this.prisma.services.findMany({
-      where: {
-        doctorId: doctor?.id,
-      },
-    });
-
-    return res.status(HttpStatus.OK).json({
-      ...doctor,
-      services: servicesByDoctor,
-    });
+        userId: +id,
+      }
+    })
+    return await this.admin.getDoctorOneInfo(doctorByUser?.id, res);
   }
+  // async getOrders(res:Response){
+  //   const orders = await this.prisma.orders.findMany();
+  //   const users = await this.prisma.users.findMany({
+  //     where: {
+  //       id: { in: orders.map((item) => item.userId) },
+  //     },
+  //   });
+  //   const services = await this.prisma.services.findMany({
+  //     where: {
+  //       id:
+  //     },
+  //   });
+  //   const orderFullInfo = orders.map((order) => {
+  //     const user = users.find((user) => user.id == order.userId);
+  //     const doctor = doctors.find((doctor) => doctor.id == order.doctorId);
+  //     const service = services.find((service) => service.id == order.serviceId);
+  //     return {
+  //       id: order.id,
+  //       userId: order.id,
+  //       userFullName: `${user?.firstName} ${user?.lastName} ${user?.surName}`,
+  //       userEmail: user?.email,
+  //       userPhone: user?.phone,
+  //       serviceName: service?.name,
+  //       status: order.status,
+  //       doctorFullName: `${doctor?.firstName} ${doctor?.lastName} ${doctor?.surName}`,
+  //       date: order.date,
+  //       price: service?.price,
+  //     };
+  //   });
+  //
+  //   return res.status(HttpStatus.OK).json(orderFullInfo);
+  // }
 }

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { Response } from 'express';
 import { GetDoctorDoctorsDto } from './dto/getDoctor-doctors.dto';
@@ -23,13 +16,16 @@ export class DoctorsController {
 
   @Get(':id')
   async findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
+    @Param('id')
     id: number,
     @Res() res: Response,
   ): Promise<Response<GetDoctorDoctorsDto>> {
     return this.doctorsService.findOne(id, res);
   }
+  // @Get('/orders')
+  // async getOrders(
+  //   @Res() res: Response,
+  // ): Promise<Response<GetDoctorDoctorsDto>> {
+  //   return this.doctorsService.getOrders( res);
+  // }
 }
