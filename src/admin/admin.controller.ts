@@ -52,7 +52,6 @@ export class AdminController {
   async findAllDoctors(@Request() req: Request, @Res() res: Response) {
     return this.adminService.findAllDoctors(req, res);
   }
-  @Roles(Role.ADMIN )
   @Get('doctors/:id')
   async getDoctorOneInfo(@Param('id') id: string, @Res() res: Response) {
     return this.adminService.getDoctorOneInfo(+id, res);

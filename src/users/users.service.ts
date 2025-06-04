@@ -3,7 +3,7 @@ import { Prisma, Users } from '../../prisma/generated/client';
 import { PrismaService } from '../prisma.service';
 import { Response } from 'express';
 import * as bcrypt from 'bcryptjs';
-import { UpdatePasswordDto } from './dto/update-user.dto';
+import { UpdatePasswordDto, UpdateUserDto } from './dto/update-user.dto';
 import UsersCreateInput = Prisma.UsersCreateInput;
 
 @Injectable()
@@ -43,9 +43,15 @@ export class UsersService {
     user: Users,
     res: Response,
   ) {
+    console.log(passwords);
+    const userWithPassword =await  this.prisma.users.findFirst({
+      where: {
+        id: user?.sub,
+      }
+    })
     const passwordCompare = await bcrypt.compare(
       passwords.currentPassword,
-      user?.password,
+      userWithPassword?.password,
     );
 
     if (!passwordCompare) {
@@ -53,6 +59,7 @@ export class UsersService {
         message: 'Пароль не верный',
       });
     }
+    console.log(passwords.newPassword);
 
     const newPasswordHash = await bcrypt.hash(passwords.newPassword, 10);
     try {
@@ -71,17 +78,18 @@ export class UsersService {
     }
   }
   async updateUser(
-    updateUserDto: UpdatePasswordDto,
+    updateUserDto: UpdateUserDto,
     user: Users,
     res: Response,
   ) {
     try {
+      console.log(updateUserDto, 'dasddasd');
       await this.prisma.users.update({
         data: {
           ...updateUserDto,
         },
         where: {
-          id: user.id,
+          id: user.sub,
         },
       });
       return res.status(HttpStatus.OK).json({});
@@ -112,5 +120,41 @@ export class UsersService {
       },
     });
     res.status(HttpStatus.CREATED).send({ succes: true });
+  }
+  async getOrders(user, res: Response) {
+    console.log('sdfsad');
+    const ordersByUser = await this.prisma.orders.findMany({
+      where: {
+        userId: user.sub,
+      }
+    })
+    const otherDoctors = await this.prisma.doctors.findMany({
+      where: {
+        id: { in: ordersByUser.map((item) => item.doctorId) },
+      },
+    });
+    const otherServices = await this.prisma.services.findMany({
+      where: {
+        id: {
+          in: ordersByUser.map((item) => item.serviceId),
+        },
+      },
+    });
+    const orderFullInfo = ordersByUser.map((order) => {
+      const doctor = otherDoctors.find((doctor) => doctor.id == order.doctorId);
+      const service = otherServices.find(
+        (service) => service.id == order.serviceId,
+      );
+      return {
+        id: order.id,
+        serviceName: service?.name,
+        status: order.status,
+        doctorFullName: `${doctor?.firstName} ${doctor?.lastName} ${doctor?.surName}`,
+        date: order.date,
+        price: service?.price,
+      };
+    });
+    console.log(orderFullInfo);
+    return res.status(HttpStatus.OK).json(orderFullInfo);
   }
 }

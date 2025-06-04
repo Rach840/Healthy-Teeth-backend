@@ -14,6 +14,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { Prisma } from '../../prisma/generated/client';
 import { UpdatePasswordDto, UpdateUserDto } from './dto/update-user.dto';
 import UsersCreateInput = Prisma.UsersCreateInput;
+import { Response } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -43,9 +44,11 @@ export class UsersController {
   ) {
     await this.usersService.updateUser(updateUserDto, req.user, res);
   }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+
+  @UseGuards(AuthGuard)
+  @Get('orders')
+   getOrders(@Request() req: Request, @Res() res: Response) {
+    return  this.usersService.getOrders(req.user, res);
   }
   @UseGuards(AuthGuard)
   @Post('setOrder')

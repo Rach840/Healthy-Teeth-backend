@@ -110,7 +110,7 @@ export class AdminService {
       return {
         id: order.id,
         userId: order.id,
-        userFullName: `${user?.firstName} ${user?.lastName} ${user?.surName}`,
+        userFullName: `${user?.firstName} ${user?.lastName} ${user?.surName ? user?.surName : ''}`,
         userEmail: user?.email,
         userPhone: user?.phone,
         serviceName: service?.name,
