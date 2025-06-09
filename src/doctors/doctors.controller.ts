@@ -6,8 +6,7 @@ import { Roles } from '../roles/roles.decorator';
 import { Roles as Role } from '../../prisma/generated/client';
 import { RolesGuard } from '../roles/roles.guard';
 import { AuthGuard } from '../auth/auth.guard';
-@Roles(Role.DOCTOR)
-@UseGuards(AuthGuard, RolesGuard)
+
 @Controller('doctors')
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
@@ -18,7 +17,8 @@ export class DoctorsController {
   ): Promise<Response<GetDoctorDoctorsDto[]>> {
     return this.doctorsService.findAll(res);
   }
-
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('profile')
   async getProfile(
     @Request() req: Request,
@@ -26,14 +26,20 @@ export class DoctorsController {
   ): Promise<Response<GetDoctorDoctorsDto>> {
     return await this.doctorsService.findOne(req.user, res);
   }
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('orders/:id')
   async changeStatus(@Param('id') id: string, @Res() res: Response) {
     return await this.doctorsService.changeStatus(id, res);
   }
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('orders/:id')
   async getOrder(@Param('id') id: string, @Res() res: Response) {
     return await this.doctorsService.getOrder(id, res);
   }
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('orders')
   async getOrders(
     @Request() req: Request,
