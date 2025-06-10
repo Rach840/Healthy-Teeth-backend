@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Request, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, ParseIntPipe, Patch, Request, Res, UseGuards } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { Response } from 'express';
 import { GetDoctorDoctorsDto } from './dto/getDoctor-doctors.dto';
@@ -25,6 +25,18 @@ export class DoctorsController {
     @Res() res: Response,
   ): Promise<Response<GetDoctorDoctorsDto>> {
     return await this.doctorsService.findOne(req.user, res);
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @Res() res: Response,
+  ): Promise<Response<GetDoctorDoctorsDto>> {
+    return this.doctorsService.getDoctor(id, res);
   }
   @Roles(Role.DOCTOR)
   @UseGuards(AuthGuard, RolesGuard)

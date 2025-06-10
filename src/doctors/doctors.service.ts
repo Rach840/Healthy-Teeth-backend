@@ -28,15 +28,51 @@ export class DoctorsService {
       }),
     );
   }
+  async getDoctor(
+    id: number,
+    res: Response,
+  ): Promise<Response<GetDoctorDoctorsDto>> {
+    const doctor: Doctors | null = await this.prisma.doctors.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    if (!doctor) {
+      return res.status(HttpStatus.NO_CONTENT);
+    }
+    const servicesByDoctor = await this.prisma.services.findMany({
+      where: {
+        doctorId: doctor?.id,
+      },
+    });
+
+    return res.status(HttpStatus.OK).json({
+      ...doctor,
+      services: servicesByDoctor,
+    });
+  }
+  async findOne(
+    user: Users,
+    res: Response,
+  ): Promise<Response<GetDoctorDoctorsDto>> {
+    console.log('findone', user.sub);
+    const doctorByUser = await this.prisma.doctors.findFirst({
+      where: {
+        userId: user.sub,
+      },
+    });
+    console.log(doctorByUser);
+    return await this.admin.getDoctorOneInfo(doctorByUser?.id, res);
+  }
 
   async findOne(
     user: Users,
     res: Response,
   ): Promise<Response<GetDoctorDoctorsDto>> {
-    console.log('findone', +user.sub);
+    console.log('findone', user.sub);
     const doctorByUser = await this.prisma.doctors.findFirst({
       where: {
-        userId: +user.sub,
+        userId: user.sub,
       },
     });
     console.log(doctorByUser);
